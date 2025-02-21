@@ -1,16 +1,26 @@
 using System.Reflection;
 using API.Helpers;
+using Application.Interfaces;
+using Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Environment = System.Environment;
 
-namespace API.Extensions;
+namespace API.Extensions.Services;
 
 public static class ServiceExtensions
 {
     public static IServiceCollection ConfigureControllerServices(this IServiceCollection services)
     {
         services.AddControllers();
+        return services;
+    }
+    
+    public static IServiceCollection ConfigureHttpContextAccessor(this IServiceCollection services)
+    {
+        services.AddHttpContextAccessor();
+        services.AddScoped<IUserAccessor, UserAccessor>();
+
         return services;
     }
 
@@ -53,7 +63,7 @@ public static class ServiceExtensions
 
             if (env == Konstants.Environment.Type.Development.ToString())
             {
-                connStr = configuration.GetConnectionString("DefaultConnection");
+                connStr = configuration.GetConnectionString(Konstants.DefaultConnection);
             }
             else
             {

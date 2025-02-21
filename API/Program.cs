@@ -1,5 +1,6 @@
 using API.Extensions;
 using API.Extensions.Middleware;
+using API.Extensions.Services;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 

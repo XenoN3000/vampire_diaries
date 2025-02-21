@@ -1,4 +1,4 @@
-namespace API.Extensions;
+namespace API.Extensions.Services;
 
 public static class ApplyServicesExtensions
 {
@@ -11,6 +11,7 @@ public static class ApplyServicesExtensions
         services.ConfigureCors();
         services.AddMediatorConfig();
         services.AddAutoMapperConfig();
+        services.ConfigureHttpContextAccessor();
         
         return services;
     }
