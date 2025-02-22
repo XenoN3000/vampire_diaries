@@ -1,14 +1,15 @@
 namespace Domain;
 
-public class Diaries
+public class Diary
 {
-
     public Guid Id { get; set; }
-    public string Data { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
     public DateTime StartTim { get; set; }
     public DateTime EndTime { get; set; }
     public DateTime Duration { get; set; }
-
-    public AppUser Owner { get; set; }
     
+
+    public string OwnerId { get; set; }
+    public AppUser Owner { get; set; }
 }

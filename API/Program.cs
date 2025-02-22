@@ -1,6 +1,8 @@
 using API.Extensions;
 using API.Extensions.Middleware;
 using API.Extensions.Services;
+using Domain;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -26,6 +28,7 @@ public class Program
         try
         {
             var context = services.GetRequiredService<DataContext>();
+            var userManager = services.GetRequiredService<UserManager<AppUser>>();
             await context.Database.MigrateAsync();
         }
         catch (Exception ex)

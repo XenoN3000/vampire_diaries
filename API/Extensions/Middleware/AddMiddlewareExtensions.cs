@@ -1,4 +1,5 @@
 using API.Helpers;
+using API.Middleware;
 
 namespace API.Extensions.Middleware;
 
@@ -6,6 +7,10 @@ public static class AddMiddlewareExtensions
 {
     public static WebApplication AddMiddlewares(this WebApplication app)
     {
+        
+        app.UseMiddleware<ExceptionMiddleware>();
+
+        
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -13,9 +18,15 @@ public static class AddMiddlewareExtensions
         }
         else
         {
-            app.UseHttpsRedirection();
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Append("Strict-Transport-Security","max-age=31536000");
+                await next.Invoke();
+            });
         }
         
+        app.UseHttpsRedirection();
+
         app.UseCors(Konstants.CorsPolicy);
         
         // app.UseAuthorization();

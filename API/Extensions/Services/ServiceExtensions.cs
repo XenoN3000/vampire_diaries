@@ -2,6 +2,8 @@ using System.Reflection;
 using API.Helpers;
 using Application.Interfaces;
 using Infrastructure.Security;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Environment = System.Environment;
@@ -12,10 +14,14 @@ public static class ServiceExtensions
 {
     public static IServiceCollection ConfigureControllerServices(this IServiceCollection services)
     {
-        services.AddControllers();
+        services.AddControllers(options =>
+        {
+            var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+            options.Filters.Add(new AuthorizeFilter(policy));
+        });
         return services;
     }
-    
+
     public static IServiceCollection ConfigureHttpContextAccessor(this IServiceCollection services)
     {
         services.AddHttpContextAccessor();
