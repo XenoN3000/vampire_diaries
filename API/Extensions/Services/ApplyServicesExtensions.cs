@@ -12,6 +12,7 @@ public static class ApplyServicesExtensions
         services.AddMediatorConfig();
         services.AddAutoMapperConfig();
         services.ConfigureHttpContextAccessor();
+        services.AddIdentityServices(configuration);
         
         return services;
     }

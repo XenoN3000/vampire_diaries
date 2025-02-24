@@ -47,8 +47,10 @@ public class AccountController : ControllerBase
 
         var user = new AppUser
         {
-            DeviceId = registerDto.DeviceId
+            DeviceId = registerDto.DeviceId,
         };
+
+        user.UserName = $"Guest-{user.Id}";
 
         var result = await _userManager.CreateAsync(user);
 

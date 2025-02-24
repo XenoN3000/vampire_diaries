@@ -15,5 +15,9 @@ public class MappingProfiles : Profile
         CreateMap<DiaryDto, Diary>()
             .ForMember(d => d.StartTim, o => o.MapFrom(s => s.Date))
             .ForMember(d => d.OwnerId, o => o.MapFrom(s => s.Owner.DeviceId));
+
+
+        CreateMap<CreateDiaryDto, Diary>()
+            .ForMember(d => d.StartTim, o => o.MapFrom(s => s.Date));
     }
 }

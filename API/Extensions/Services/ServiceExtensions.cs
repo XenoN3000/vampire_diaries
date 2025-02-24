@@ -70,6 +70,7 @@ public static class ServiceExtensions
             if (env == Konstants.Environment.Type.Development.ToString())
             {
                 connStr = configuration.GetConnectionString(Konstants.DefaultConnection);
+                opt.UseSqlite(connStr);
             }
             else
             {
@@ -88,9 +89,9 @@ public static class ServiceExtensions
 
 
                 connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb}; Trust Server Certificate=true";
+                opt.UseNpgsql(connStr);
             }
 
-            opt.UseNpgsql(connStr);
         });
         return services;
     }
