@@ -16,7 +16,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{35BEE2EE-7F92-40B5-B0AD-CBD9D6A371C3}"
 	ProjectSection(SolutionItems) = preProject
 		compose.yaml = compose.yaml
-		buildAndDeploy.yaml = buildAndDeploy.yaml
+		workflows\buildAndDeploy.yaml = workflows\buildAndDeploy.yaml
 	EndProjectSection
 EndProject
 Global

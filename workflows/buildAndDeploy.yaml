@@ -1,4 +1,4 @@
-name: build and push to docker
+name: build and push to docker and publish to liara
 
 
 on:
