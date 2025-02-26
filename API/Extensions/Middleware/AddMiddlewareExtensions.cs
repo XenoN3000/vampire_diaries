@@ -10,6 +10,7 @@ public static class AddMiddlewareExtensions
         
         app.UseMiddleware<ExceptionMiddleware>();
 
+
         
         if (app.Environment.IsDevelopment())
         {
@@ -18,6 +19,10 @@ public static class AddMiddlewareExtensions
         }
         else
         {
+            
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            
             app.Use(async (context, next) =>
             {
                 context.Response.Headers.Append("Strict-Transport-Security","max-age=31536000");
