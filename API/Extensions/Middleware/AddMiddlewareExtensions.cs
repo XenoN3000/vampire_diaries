@@ -11,17 +11,18 @@ public static class AddMiddlewareExtensions
         app.UseMiddleware<ExceptionMiddleware>();
 
 
+        app.UseSwagger();
+        app.UseSwaggerUI();
         
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            // app.UseSwagger();
+            // app.UseSwaggerUI();
         }
         else
         {
             
-            app.UseSwagger();
-            app.UseSwaggerUI();
+           
             
             app.Use(async (context, next) =>
             {
