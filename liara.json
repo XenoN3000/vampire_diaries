@@ -1,5 +1,5 @@
 {
-  "app": "reactivities",
+  "app": "vampirediaries",
   "image": "xenon1998/vampire-diary:latest",
   "port": 8080,
   "build": {
