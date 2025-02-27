@@ -34,9 +34,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -49,7 +46,7 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Instal liara CLI
+      - name: Install liara CLI
         run: npm i -g @liara/cli@7
 
       - name: Deploy
