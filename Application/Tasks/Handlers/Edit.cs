@@ -1,18 +1,18 @@
 using Application.Core;
-using Application.Diaries.DTOs;
 using Application.Diaries.Vlidators;
+using Application.Tasks.DTOs;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Persistence;
 
-namespace Application.Diaries.Handlers;
+namespace Application.Tasks.Handlers;
 
 public class Edit
 {
     public class Command : IRequest<Result<Unit>>
     {
-        public DiaryDto DiaryDto { get; set; }
+        public TaskDto TaskDto { get; set; }
     }
 
 
@@ -21,7 +21,7 @@ public class Edit
     {
         public CommandValidator()
         {
-            RuleFor(x => x.DiaryDto).SetValidator(new DiaryValidator());
+            RuleFor(x => x.TaskDto).SetValidator(new TaskValidator());
         }
     }
 
@@ -39,11 +39,11 @@ public class Edit
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var diary = await _context.Diaries.FindAsync(request.DiaryDto.Id, cancellationToken);
+            var task = await _context.Tasks.FindAsync(request.TaskDto.Id, cancellationToken);
 
-            if (diary is null) return null;
+            if (task is null) return null;
 
-            _mapper.Map(request.DiaryDto, diary);
+            _mapper.Map(request.TaskDto, task);
             
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 

@@ -1,27 +1,26 @@
 using Application.Core;
-using Application.Diaries.DTOs;
 using Application.Diaries.Vlidators;
 using Application.Interfaces;
-using Domain;
+using Application.Tasks.DTOs;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Diaries.Handlers;
+namespace Application.Tasks.Handlers;
 
 public class Create
 {
     public class Command : IRequest<Result<Unit>>
     {
-        public CreateDiaryDto DiaryDto { get; set; }
+        public CreateTaskDto TaskDto { get; set; }
     }
 
     public class CommandValidator : AbstractValidator<Command>
     {
         public CommandValidator()
         {
-            RuleFor(x => x.DiaryDto).SetValidator(new DiaryValidator());
+            RuleFor(x => x.TaskDto).SetValidator(new TaskValidator());
         }
     }
 
@@ -44,18 +43,18 @@ public class Create
 
             if (user is null) return Result<Unit>.Failure("Failed To Create Diary due to unknown user !!!");
 
-            var diary = new Diary()
+            var task = new Domain.Task()
             {
-                Id = request.DiaryDto.Id,
-                Title = request.DiaryDto.Title,
-                Description = request.DiaryDto.Description,
-                StartTim = request.DiaryDto.Date,
-                Duration = request.DiaryDto.Duration,
+                Id = request.TaskDto.Id,
+                Title = request.TaskDto.Title,
+                Description = request.TaskDto.Description,
+                StartTim = request.TaskDto.Date,
+                Duration = request.TaskDto.Duration,
                 OwnerId = user.DeviceId,
                 Owner = user
             };
 
-            _context.Diaries.Add(diary);
+            _context.Tasks.Add(task);
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
             if (!result) Result<Unit>.Failure("Failed to create Diary DB error ");

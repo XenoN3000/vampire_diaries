@@ -2,7 +2,7 @@ using Application.Core;
 using MediatR;
 using Persistence;
 
-namespace Application.Diaries.Handlers;
+namespace Application.Tasks.Handlers;
 
 public class Delete
 {
@@ -24,11 +24,11 @@ public class Delete
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var diary = await _context.Diaries.FindAsync(request.Id, cancellationToken);
+            var task = await _context.Tasks.FindAsync(request.Id, cancellationToken);
 
-            if (diary is null) return null;
+            if (task is null) return null;
 
-            _context.Diaries.Remove(diary);
+            _context.Tasks.Remove(task);
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
             if (!result) return Result<Unit>.Failure("Failed to delete Diary");

@@ -5,6 +5,7 @@ using Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using Task = System.Threading.Tasks.Task;
 
 namespace API;
 

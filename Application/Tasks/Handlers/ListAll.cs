@@ -1,22 +1,22 @@
 using Application.Core;
-using Application.Diaries.DTOs;
 using Application.Interfaces;
+using Application.Tasks.DTOs;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Diaries.Handlers;
+namespace Application.Tasks.Handlers;
 
 public class ListAll
 {
-    public class Query : IRequest<Result<List<DiaryDto>>>
+    public class Query : IRequest<Result<List<TaskDto>>>
     {
     }
 
 
-    public class Handler : IRequestHandler<Query, Result<List<DiaryDto>>>
+    public class Handler : IRequestHandler<Query, Result<List<TaskDto>>>
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
@@ -30,17 +30,17 @@ public class ListAll
         }
 
 
-        public async Task<Result<List<DiaryDto>>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<List<TaskDto>>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var query = _context.Diaries
+            var query = _context.Tasks
                 .Where(d => d.OwnerId == _userAccessor.GetDeviceId())
                 .OrderBy(d => d.StartTim)
-                .ProjectTo<DiaryDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<TaskDto>(_mapper.ConfigurationProvider)
                 .AsQueryable();
 
             var diaries = await query.ToListAsync(cancellationToken);
 
-            return Result<List<DiaryDto>>.Success(diaries);
+            return Result<List<TaskDto>>.Success(diaries);
         }
     }
 }

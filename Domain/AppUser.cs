@@ -6,5 +6,6 @@ public class AppUser: IdentityUser
 {
     public string DeviceId { get; set; }
 
-    public ICollection<Diary> Diaries { get; set; } = new List<Diary>();
+    public ICollection<Domain.Task> Diaries { get; set; } = new List<Task>();
+    public ICollection<UserLogInTime> UserLogIns { get; set; } = new List<UserLogInTime>();
 }

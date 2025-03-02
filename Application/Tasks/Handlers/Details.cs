@@ -1,23 +1,23 @@
 using Application.Core;
-using Application.Diaries.DTOs;
 using Application.Interfaces;
+using Application.Tasks.DTOs;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Diaries.Handlers;
+namespace Application.Tasks.Handlers;
 
 public class Details
 {
-    public class Query : IRequest<Result<DiaryDto>>
+    public class Query : IRequest<Result<TaskDto>>
     {
         public Guid Id { get; set; }
     }
 
 
-    public class Handler : IRequestHandler<Query, Result<DiaryDto>>
+    public class Handler : IRequestHandler<Query, Result<TaskDto>>
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
@@ -31,13 +31,13 @@ public class Details
         }
 
 
-        public async Task<Result<DiaryDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<TaskDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var diary = await _context.Diaries
-                .ProjectTo<DiaryDto>(_mapper.ConfigurationProvider)
+            var diary = await _context.Tasks
+                .ProjectTo<TaskDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(d => d.Id == request.Id, cancellationToken);
 
-            return Result<DiaryDto>.Success(diary);
+            return Result<TaskDto>.Success(diary);
         }
     }
 }

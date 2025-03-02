@@ -1,11 +1,11 @@
-using Application.Diaries.DTOs;
+using Application.Tasks.DTOs;
 using FluentValidation;
 
 namespace Application.Diaries.Vlidators;
 
-public class DiaryValidator : AbstractValidator<CreateDiaryDto>
+public class TaskValidator : AbstractValidator<CreateTaskDto>
 {
-    public DiaryValidator()
+    public TaskValidator()
     {
         RuleFor(x => x.Title).NotEmpty();
         RuleFor(x => x.Date).NotEmpty();

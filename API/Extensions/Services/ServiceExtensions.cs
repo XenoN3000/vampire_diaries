@@ -1,10 +1,12 @@
 using System.Reflection;
 using API.Helpers;
+using Application.Core;
 using Application.Interfaces;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Persistence;
 using Environment = System.Environment;
 
@@ -12,6 +14,42 @@ namespace API.Extensions.Services;
 
 public static class ServiceExtensions
 {
+
+    public static IServiceCollection ConfigureSwaggerGen(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(options =>
+        {
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Name = "Authorization",
+                Description = "Enter 'Bearer {token}'"
+            });
+            
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    []
+                }
+                
+            });
+
+        });
+
+        return services;
+    }
+    
     public static IServiceCollection ConfigureControllerServices(this IServiceCollection services)
     {
         services.AddControllers(options =>
@@ -44,18 +82,18 @@ public static class ServiceExtensions
 
         return services;
     }
-
-
+    
     public static IServiceCollection AddMediatorConfig(this IServiceCollection services)
     {
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+        // services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Application.Tasks.Handlers.List.Handler).Assembly));
 
         return services;
     }
 
     public static IServiceCollection AddAutoMapperConfig(this IServiceCollection services)
     {
-        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        services.AddAutoMapper(typeof(MappingProfiles).Assembly);
         return services;
     }
 

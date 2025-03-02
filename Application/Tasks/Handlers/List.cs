@@ -1,22 +1,23 @@
 using Application.Core;
-using Application.Diaries.DTOs;
+using Application.Diaries;
 using Application.Interfaces;
+using Application.Tasks.DTOs;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Persistence;
 
-namespace Application.Diaries.Handlers;
+namespace Application.Tasks.Handlers;
 
 public class List
 {
-    public class Query : IRequest<Result<PagedList<DiaryDto>>>
+    public class Query : IRequest<Result<PagedList<TaskDto>>>
     {
-        public DiaryParams Params { get; set; }
+        public TaskParams Params { get; set; }
     }
 
 
-    public class Handler : IRequestHandler<Query, Result<PagedList<DiaryDto>>>
+    public class Handler : IRequestHandler<Query, Result<PagedList<TaskDto>>>
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
@@ -30,17 +31,17 @@ public class List
         }
 
 
-        public async Task<Result<PagedList<DiaryDto>>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<PagedList<TaskDto>>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var query = _context.Diaries
+            var query = _context.Tasks
                 .Where(d => d.OwnerId == _userAccessor.GetDeviceId())
                 .OrderBy(d => d.StartTim)
-                .ProjectTo<DiaryDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<TaskDto>(_mapper.ConfigurationProvider)
                 .AsQueryable();
 
-            var diaries = await PagedList<DiaryDto>.CreateAsync(query, request.Params.pageNumber, request.Params.PageSize, cancellationToken);
+            var diaries = await PagedList<TaskDto>.CreateAsync(query, request.Params.pageNumber, request.Params.PageSize, cancellationToken);
 
-            return Result<PagedList<DiaryDto>>.Success(diaries);
+            return Result<PagedList<TaskDto>>.Success(diaries);
         }
     }
 }

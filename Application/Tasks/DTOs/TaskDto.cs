@@ -1,8 +1,8 @@
 using Domain;
 
-namespace Application.Diaries.DTOs;
+namespace Application.Tasks.DTOs;
 
-public class DiaryDto
+public class TaskDto
 {
     public Guid Id { get; set; }
     public string Title { get; set; }

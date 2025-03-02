@@ -34,8 +34,10 @@ public static class AddMiddlewareExtensions
         app.UseHttpsRedirection();
 
         app.UseCors(Konstants.CorsPolicy);
+
+        app.UseAuthentication();
+        app.UseAuthorization();
         
-        // app.UseAuthorization();
         app.MapControllers();
         
         

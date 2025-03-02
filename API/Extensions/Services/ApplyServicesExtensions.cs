@@ -6,7 +6,7 @@ public static class ApplyServicesExtensions
     {
         services.ConfigureControllerServices();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.ConfigureSwaggerGen();
         services.ConfigureDatabase(configuration);
         services.ConfigureCors();
         services.AddMediatorConfig();

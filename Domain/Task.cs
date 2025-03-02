@@ -1,6 +1,6 @@
 namespace Domain;
 
-public class Diary
+public class Task
 {
     public Guid Id { get; set; }
     public string Title { get; set; }
