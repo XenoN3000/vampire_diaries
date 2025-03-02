@@ -108,7 +108,7 @@ public static class ServiceExtensions
             if (env == Konstants.Environment.Type.Development.ToString())
             {
                 connStr = configuration.GetConnectionString(Konstants.DefaultConnection);
-                opt.UseNpgsql(connStr);
+                opt.UseSqlite(connStr);
             }
             else
             {
@@ -126,7 +126,7 @@ public static class ServiceExtensions
                 var pgPort = pgHostPort.Split(":")[1];
 
 
-                connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb}; Trust Server Certificate=true";
+                connStr = $"Server={pgHost}; Port={pgPort}; User Id={pgUser}; Password={pgPass}; Database={pgDb}; Trust Server Certificate=true";
                 opt.UseNpgsql(connStr);
             }
 

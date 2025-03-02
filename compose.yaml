@@ -6,7 +6,7 @@
 
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: Password@123
+      POSTGRES_PASSWORD: Password123
       PGDATA: /var/lib/postgresql/data/pgdata
 
     ports:
@@ -17,13 +17,18 @@
     image: xenon1998/timingapp:latest
     restart: always
     
-    environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      DATABASE_URL: postgresql://root:pFZroHyJCPTl1LKOA8vpHkjH@reactivity:5432/postgres
-    
     
     depends_on:
       - sql
+        
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      DATABASE_URL: postgresql://admin:Password123@sql:5432/TimingApp
+      TokenKey: pw#@A2/-;G>a)N<(WBK"?D{u`hj%z9[Cftq63@K]4Nw:j_$x7<a2FYRU?WvgJ8`;
+  
+    build:
+      context: .
+      dockerfile: API/Dockerfile
       
     ports:
       - "80:8080"
