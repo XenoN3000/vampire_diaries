@@ -14,18 +14,16 @@
   
   
   api:
-    image: api
+    image: xenon1998/timingapp:latest
     restart: always
     
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+      DATABASE_URL: postgresql://root:pFZroHyJCPTl1LKOA8vpHkjH@reactivity:5432/postgres
+    
     
     depends_on:
       - sql
-    
-    build:
-      context: .
-      dockerfile: API/Dockerfile
       
     ports:
       - "80:8080"
