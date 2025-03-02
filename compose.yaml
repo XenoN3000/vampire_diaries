@@ -1,6 +1,31 @@
 ﻿services:
+  
+  sql:
+    image: postgres
+    restart: always
+
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: Password@123
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+    ports:
+      - "5432:5432"
+  
+  
   api:
     image: api
+    restart: always
+    
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    
+    depends_on:
+      - sql
+    
     build:
       context: .
       dockerfile: API/Dockerfile
+      
+    ports:
+      - "80:8080"

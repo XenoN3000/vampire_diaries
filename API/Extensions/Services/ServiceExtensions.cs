@@ -108,7 +108,7 @@ public static class ServiceExtensions
             if (env == Konstants.Environment.Type.Development.ToString())
             {
                 connStr = configuration.GetConnectionString(Konstants.DefaultConnection);
-                opt.UseSqlite(connStr);
+                opt.UseNpgsql(connStr);
             }
             else
             {
