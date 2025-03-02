@@ -41,6 +41,7 @@ jobs:
           tags: xenon1998/vampire-diary:latest
           file: API/Dockerfile
 
+
       - name: Install Liara CLI
         uses: actions/setup-node@v4
         with:
