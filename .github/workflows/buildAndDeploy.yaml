@@ -1,6 +1,5 @@
 name: build and push to docker and publish to liara
 
-
 on:
   push:
     branches:
@@ -27,7 +26,7 @@ jobs:
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
+          
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
