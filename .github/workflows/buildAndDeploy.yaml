@@ -54,4 +54,5 @@ jobs:
           LIARA_TOKEN: ${{ secrets.LIARA_API_TOKEN }}
         
         run:
-          liara deploy --platform=docker --api-token="$LIARA_TOKEN" --no-app-logs
+          liara deploy --platform=docker --api-token="$LIARA_TOKEN"
+#          liara deploy --platform=docker --api-token="$LIARA_TOKEN" --no-app-logs
