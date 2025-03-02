@@ -37,11 +37,11 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: xenon1998/vampire-diary:latest
+          tags: xenon1998/timingapp:latest
           file: API/Dockerfile
 
 
-      - name: Install Liara CLI
+      - name: Install node
         uses: actions/setup-node@v4
         with:
           node-version: "22"
