@@ -1,5 +1,4 @@
 using Application.Core;
-using Application.Diaries;
 using Application.Interfaces;
 using Application.Tasks.DTOs;
 using AutoMapper;
@@ -13,6 +12,7 @@ public class List
 {
     public class Query : IRequest<Result<PagedList<TaskDto>>>
     {
+        public Guid ProjectId { get; set; }
         public TaskParams Params { get; set; }
     }
 
@@ -34,7 +34,7 @@ public class List
         public async Task<Result<PagedList<TaskDto>>> Handle(Query request, CancellationToken cancellationToken)
         {
             var query = _context.Tasks
-                .Where(d => d.OwnerId == _userAccessor.GetDeviceId())
+                .Where(d => d.ProjectId == request.ProjectId)
                 .OrderBy(d => d.StartTim)
                 .ProjectTo<TaskDto>(_mapper.ConfigurationProvider)
                 .AsQueryable();

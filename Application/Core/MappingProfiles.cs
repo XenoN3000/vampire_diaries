@@ -1,3 +1,4 @@
+using Application.Projects.DTOs;
 using Application.Tasks.DTOs;
 using AutoMapper;
 using Domain;
@@ -17,8 +18,7 @@ public class MappingProfiles : Profile
 
         CreateMap<TaskDto, Domain.Task>()
             .ForMember(d => d.StartTim, o => o.MapFrom(s => s.Date))
-            .ForMember(d => d.OwnerId, o => o.MapFrom(s => s.Owner.DeviceId));
-
+            .ForMember(d => d.ProjectId, o => o.MapFrom(s => s.ProjectId));
 
         CreateMap<CreateTaskDto, Domain.Task>()
             .ForMember(d => d.StartTim, o => o.MapFrom(s => s.Date));
@@ -35,5 +35,9 @@ public class MappingProfiles : Profile
                     .Max()))
             .ForAllMembers(opts => opts.Condition((s, d, sm) => sm != null));
 
+        CreateMap<Project, Project>();
+        CreateMap<Project, ProjectDto>();
+        CreateMap<ProjectDto, Project>()
+            .ForMember(d => d.OwnerId, o => o.MapFrom(s => s.Owner.Id));
     }
 }

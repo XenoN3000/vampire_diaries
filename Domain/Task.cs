@@ -1,13 +1,9 @@
 namespace Domain;
 
-public class Task
+public class Task : BaseEntity
 {
-    public Guid Id { get; set; }
-    public string Title { get; set; }
-    public string Description { get; set; }
     public DateTime StartTim { get; set; }
     public DateTime Duration { get; set; }
-    
-    public string OwnerId { get; set; }
-    public AppUser Owner { get; set; }
+    public Guid ProjectId { get; set; }
+    public Project Project { get; set; }
 }

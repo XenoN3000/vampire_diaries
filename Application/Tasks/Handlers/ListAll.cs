@@ -13,6 +13,7 @@ public class ListAll
 {
     public class Query : IRequest<Result<List<TaskDto>>>
     {
+        public Guid ProjectId { get; set; }
     }
 
 
@@ -22,25 +23,24 @@ public class ListAll
         private readonly IMapper _mapper;
         private readonly IUserAccessor _userAccessor;
 
-        public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
+        public Handler(DataContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-            _userAccessor = userAccessor;
         }
 
 
         public async Task<Result<List<TaskDto>>> Handle(Query request, CancellationToken cancellationToken)
         {
             var query = _context.Tasks
-                .Where(d => d.OwnerId == _userAccessor.GetDeviceId())
+                .Where(d => d.ProjectId == request.ProjectId)
                 .OrderBy(d => d.StartTim)
                 .ProjectTo<TaskDto>(_mapper.ConfigurationProvider)
                 .AsQueryable();
 
-            var diaries = await query.ToListAsync(cancellationToken);
+            var tasks = await query.ToListAsync(cancellationToken);
 
-            return Result<List<TaskDto>>.Success(diaries);
+            return Result<List<TaskDto>>.Success(tasks);
         }
     }
 }

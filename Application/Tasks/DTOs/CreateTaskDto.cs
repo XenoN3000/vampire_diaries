@@ -7,4 +7,5 @@ public class CreateTaskDto
     public string Description { get; set; }
     public DateTime Date { get; set; }
     public DateTime Duration { get; set; }
+    public Guid ProjectId { get; set; }
 }

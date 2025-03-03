@@ -11,7 +11,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250302101533_Initial")]
+    [Migration("20250303232955_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -87,6 +87,31 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Project", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Projects");
+                });
+
             modelBuilder.Entity("Domain.Task", b =>
                 {
                     b.Property<Guid>("Id")
@@ -99,7 +124,7 @@ namespace Persistence.Migrations
                     b.Property<DateTime>("Duration")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("OwnerId")
+                    b.Property<Guid>("ProjectId")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("StartTim")
@@ -110,7 +135,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Tasks");
                 });
@@ -256,13 +281,24 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Task", b =>
+            modelBuilder.Entity("Domain.Project", b =>
                 {
                     b.HasOne("Domain.AppUser", "Owner")
-                        .WithMany("Diaries")
+                        .WithMany("Projects")
                         .HasForeignKey("OwnerId");
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Domain.Task", b =>
+                {
+                    b.HasOne("Domain.Project", "Project")
+                        .WithMany("Tasks")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Domain.UserLogInTime", b =>
@@ -329,9 +365,14 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.AppUser", b =>
                 {
-                    b.Navigation("Diaries");
+                    b.Navigation("Projects");
 
                     b.Navigation("UserLogIns");
+                });
+
+            modelBuilder.Entity("Domain.Project", b =>
+                {
+                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

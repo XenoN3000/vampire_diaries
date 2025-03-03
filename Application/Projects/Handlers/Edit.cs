@@ -1,29 +1,30 @@
 using Application.Core;
-using Application.Tasks.DTOs;
-using Application.Tasks.Validators;
+using Application.Projects.DTOs;
+using Application.Projects.Validators;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Persistence;
 
-namespace Application.Tasks.Handlers;
+namespace Application.Projects.Handlers;
 
 public class Edit
 {
     public class Command : IRequest<Result<Unit>>
     {
-        public TaskDto TaskDto { get; set; }
+        public ProjectDto ProjectDto { get; set; }
     }
-
-
 
     public class CommandValidator : AbstractValidator<Command>
     {
         public CommandValidator()
         {
-            RuleFor(x => x.TaskDto).SetValidator(new TaskValidator());
+            RuleFor(x => x.ProjectDto).SetValidator(new ProjectValidator());
         }
     }
+
+
+
 
     public class Handler : IRequestHandler<Command, Result<Unit>>
     {
@@ -39,15 +40,15 @@ public class Edit
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var task = await _context.Tasks.FindAsync(request.TaskDto.Id, cancellationToken);
+            var project = await _context.Projects.FindAsync(request.ProjectDto.Id, cancellationToken);
 
-            if (task is null) return null;
+            if (project is null) return null;
 
-            _mapper.Map(request.TaskDto, task);
-            
+            _mapper.Map(request.ProjectDto, project);
+
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
-
-            return !result ? Result<Unit>.Failure("Failed to update Task") : Result<Unit>.Success(Unit.Value);
+            
+            return !result ? Result<Unit>.Failure("Failed to update Project") : Result<Unit>.Success(Unit.Value);
 
         }
     }

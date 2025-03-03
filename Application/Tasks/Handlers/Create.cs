@@ -1,7 +1,7 @@
 using Application.Core;
-using Application.Diaries.Vlidators;
 using Application.Interfaces;
 using Application.Tasks.DTOs;
+using Application.Tasks.Validators;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +20,7 @@ public class Create
     {
         public CommandValidator()
         {
-            RuleFor(x => x.TaskDto).SetValidator(new TaskValidator());
+            RuleFor(x => x.TaskDto).SetValidator(new CreateTaskValidator());
         }
     }
 
@@ -28,20 +28,17 @@ public class Create
     public class Handler : IRequestHandler<Command, Result<Unit>>
     {
         private readonly DataContext _context;
-        private readonly IUserAccessor _userAccessor;
-
-        public Handler(DataContext context, IUserAccessor userAccessor)
+        public Handler(DataContext context)
         {
             _context = context;
-            _userAccessor = userAccessor;
         }
 
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.DeviceId == _userAccessor.GetDeviceId(), cancellationToken);
+            var project = await _context.Projects.FirstOrDefaultAsync(x => x.Id == request.TaskDto.ProjectId , cancellationToken);
 
-            if (user is null) return Result<Unit>.Failure("Failed To Create Diary due to unknown user !!!");
+            if (project is null) return Result<Unit>.Failure("Failed To Create Task due to unknown project !!!");
 
             var task = new Domain.Task()
             {
@@ -50,8 +47,8 @@ public class Create
                 Description = request.TaskDto.Description,
                 StartTim = request.TaskDto.Date,
                 Duration = request.TaskDto.Duration,
-                OwnerId = user.DeviceId,
-                Owner = user
+                ProjectId = request.TaskDto.ProjectId,
+                Project = project
             };
 
             _context.Tasks.Add(task);

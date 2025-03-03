@@ -9,7 +9,5 @@ public class TaskDto
     public string Description { get; set; }
     public DateTime Date { get; set; }
     public DateTime Duration { get; set; }
-    
-    public AppUser Owner { get; set; }
-
+    public Guid ProjectId { get; set; }
 }

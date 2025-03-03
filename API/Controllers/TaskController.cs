@@ -1,9 +1,7 @@
 using API.Helpers;
-using Application.Diaries;
 using Application.Tasks;
 using Application.Tasks.DTOs;
 using Application.Tasks.Handlers;
-using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,16 +9,16 @@ namespace API.Controllers;
 
 public class TaskController : BaseApiController
 {
-    [HttpGet]
-    public async Task<IActionResult> GetTasks([FromQuery] TaskParams taskParams, CancellationToken cancellationToken)
+    [HttpGet("project/{projectId}")]
+    public async Task<IActionResult> GetTasks(Guid projectId, [FromQuery] TaskParams taskParams, CancellationToken cancellationToken)
     {
-        return HandlePagedResult(await Mediator.Send(new List.Query { Params = taskParams }, cancellationToken));
+        return HandlePagedResult(await Mediator.Send(new List.Query { Params = taskParams, ProjectId = projectId}, cancellationToken));
     }
 
-    [HttpGet("all")]
-    public async Task<IActionResult> GetAllTasks(CancellationToken cancellationToken)
+    [HttpGet("project/all/{projectId}")]
+    public async Task<IActionResult> GetAllTasks(Guid projectId, CancellationToken cancellationToken)
     {
-        return HandleResult(await Mediator.Send(new ListAll.Query(), cancellationToken));
+        return HandleResult(await Mediator.Send(new ListAll.Query{ProjectId = projectId}, cancellationToken));
     }
 
     [HttpGet("{id}")]
@@ -28,8 +26,6 @@ public class TaskController : BaseApiController
     {
         return HandleResult(await Mediator.Send(new Details.Query { Id = id }, cancellationToken));
     }
-
-    [Authorize(Policy = Konstants.IsDiaryOwner)]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateTask(Guid id, [FromBody] TaskDto taskDto, CancellationToken cancellationToken)
     {

@@ -2,7 +2,7 @@ using Application.Core;
 using MediatR;
 using Persistence;
 
-namespace Application.Tasks.Handlers;
+namespace Application.Projects.Handlers;
 
 public class Delete
 {
@@ -10,6 +10,8 @@ public class Delete
     {
         public Guid Id { get; set; }
     }
+
+
 
 
     public class Handler : IRequestHandler<Command, Result<Unit>>
@@ -24,14 +26,14 @@ public class Delete
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var task = await _context.Tasks.FindAsync(request.Id, cancellationToken);
+            var project = await _context.Projects.FindAsync(request.Id, cancellationToken);
 
-            if (task is null) return null;
+            if (project is null) return null;
 
-            _context.Tasks.Remove(task);
+            _context.Projects.Remove(project);
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-            if (!result) return Result<Unit>.Failure("Failed to delete Task");
+            if (!result) return Result<Unit>.Failure("Failed to delete Project");
 
             return Result<Unit>.Success(Unit.Value);
         }

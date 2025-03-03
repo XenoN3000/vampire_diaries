@@ -1,5 +1,4 @@
 using Application.Core;
-using Application.Interfaces;
 using Application.Tasks.DTOs;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -21,23 +20,21 @@ public class Details
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
-        private readonly IUserAccessor _userAccessor;
 
-        public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
+        public Handler(DataContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-            _userAccessor = userAccessor;
         }
 
 
         public async Task<Result<TaskDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var diary = await _context.Tasks
+            var task = await _context.Tasks
                 .ProjectTo<TaskDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(d => d.Id == request.Id, cancellationToken);
 
-            return Result<TaskDto>.Success(diary);
+            return Result<TaskDto>.Success(task);
         }
     }
 }

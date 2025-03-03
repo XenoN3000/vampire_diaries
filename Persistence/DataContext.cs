@@ -14,13 +14,15 @@ public class DataContext : IdentityDbContext<AppUser>
 
     public DbSet<UserLogInTime> UserLogInsTime { get; set; }
 
+    public DbSet<Project> Projects { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
-        builder.Entity<Domain.Task>()
+        builder.Entity<Project>()
             .HasOne(u => u.Owner)
-            .WithMany(d => d.Diaries)
+            .WithMany(d => d.Projects)
             .HasForeignKey(fk => fk.OwnerId);
 
         builder.Entity<UserLogInTime>()
@@ -30,5 +32,12 @@ public class DataContext : IdentityDbContext<AppUser>
             .HasOne(u => u.User)
             .WithMany(l => l.UserLogIns)
             .HasForeignKey(fk => fk.UserId);
+
+
+        builder.Entity<Project>()
+            .HasMany(p => p.Tasks)
+            .WithOne(t => t.Project)
+            .HasForeignKey(fk => fk.ProjectId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -30,7 +30,7 @@ public class IsOwnerRequirementHandler : AuthorizationHandler<IsOwnerRequirement
 
         var diaryId = Guid.Parse(_httpContextAccessor.HttpContext?.Request.RouteValues.SingleOrDefault(x => x.Key == "id").Value?.ToString()!);
 
-        var diary = _dataContext.Tasks.AsNoTracking()
+        var diary = _dataContext.Projects.AsNoTracking()
             .Include(o => o.Owner)
             .FirstOrDefaultAsync(x => x.OwnerId == userId && x.Id == diaryId).Result;
 
