@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Application.Projects.DTOs;
 
 public class CreateProjectDto
@@ -6,5 +8,10 @@ public class CreateProjectDto
     public string Title { get; set; }
     
     public string Description { get; set; }
+    
+    
+    [JsonIgnore]
+    public DateTime CreateAt { get; set; } = DateTime.UtcNow;
+    
     
 }

@@ -8,27 +8,31 @@
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: Password123
       PGDATA: /var/lib/postgresql/data/pgdata
+      
+    volumes:
+      - /Users/hoseinnahari/Documents/PgSql/timingappDB/data:/var/lib/postgresql/data
+
 
     ports:
       - "5432:5432"
   
   
   api:
-    image: xenon1998/timingapp:latest
+    image: timingapp
     restart: always
     
     
     depends_on:
       - sql
-        
+    
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       DATABASE_URL: postgresql://admin:Password123@sql:5432/TimingApp
       TokenKey: pw#@A2/-;G>a)N<(WBK"?D{u`hj%z9[Cftq63@K]4Nw:j_$x7<a2FYRU?WvgJ8`;
-  
+    
     build:
       context: .
       dockerfile: API/Dockerfile
-      
+    
     ports:
       - "80:8080"

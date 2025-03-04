@@ -11,8 +11,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250303232955_Initial")]
-    partial class Initial
+    [Migration("20250304102750_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,7 +39,7 @@ namespace Persistence.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("EmailConfirmed")
+                    b.Property<int>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("LockoutEnabled")

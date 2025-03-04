@@ -4,9 +4,9 @@ namespace API.Controllers;
 
 public class ProfileController : BaseApiController
 {
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetProfile(string id, CancellationToken cancellationToken)
+    [HttpGet]
+    public async Task<IActionResult> GetProfile(CancellationToken cancellationToken)
     {
-        return HandleResult(await Mediator.Send(new Application.Profiles.Handlers.Details.Query { DeviceId = id }, cancellationToken));
+        return HandleResult(await Mediator.Send(new Application.Profiles.Handlers.Details.Query(), cancellationToken));
     }
 }

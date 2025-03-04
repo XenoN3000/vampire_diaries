@@ -74,7 +74,7 @@ public class AccountController : ControllerBase
 
     private async Task LogLoggin(AppUser user)
     {
-        _context.UserLogInsTime.Add(new UserLogInTime { UserId = user.DeviceId, User = user, LoggedInAt = DateTime.UtcNow });
+        _context.UserLogInsTime.Add(new UserLogInTime { UserId = user.DeviceId, User = user, LoggedInAt = DateTime.Now });
         await _context.SaveChangesAsync();
     }
 

@@ -36,7 +36,7 @@ namespace Persistence.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("EmailConfirmed")
+                    b.Property<int>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("LockoutEnabled")

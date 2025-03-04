@@ -30,7 +30,7 @@ public class MappingProfiles : Profile
             .ForMember(d => d.LastLogin,
                 o => o.MapFrom(s => s.UserLogIns
                     .Where(u => u.User.DeviceId == currentDeviceId)
-                    .Select(c => (DateTime?) c.LoggedInAt)
+                    .Select(c => c.LoggedInAt.ToUniversalTime())
                     .DefaultIfEmpty()
                     .Max()))
             .ForAllMembers(opts => opts.Condition((s, d, sm) => sm != null));
@@ -39,5 +39,8 @@ public class MappingProfiles : Profile
         CreateMap<Project, ProjectDto>();
         CreateMap<ProjectDto, Project>()
             .ForMember(d => d.OwnerId, o => o.MapFrom(s => s.Owner.Id));
+
+
+        CreateMap<CreateProjectDto, Project>().ReverseMap();
     }
 }

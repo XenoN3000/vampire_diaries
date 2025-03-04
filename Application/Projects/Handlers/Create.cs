@@ -50,6 +50,11 @@ public class Create
             if (user is null) return Result<Unit>.Failure("Failed To Create Project due to unknown User !!!");
             
             var project = _mapper.Map<Project>(request.CreateProjectDto);
+            project.Owner = user;
+            project.OwnerId = user.Id;
+            project.CreateAt = DateTime.UtcNow;
+            
+            Console.WriteLine(project.Title);
 
             _context.Projects.Add(project);
 

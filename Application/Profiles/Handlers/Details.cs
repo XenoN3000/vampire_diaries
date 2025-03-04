@@ -14,7 +14,6 @@ public class Details
 
     public class Query : IRequest<Result<UserProfile>>
     {
-        public string DeviceId { get; set; }
     }
 
 
@@ -37,7 +36,7 @@ public class Details
         {
             var user = await _context.Users
                 .ProjectTo<UserProfile>(_mapper.ConfigurationProvider, new { currentDeviceId = _userAccessor.GetDeviceId() })
-                .SingleOrDefaultAsync(x => x.DeviceId == request.DeviceId, cancellationToken);
+                .SingleOrDefaultAsync(x => x.DeviceId == _userAccessor.GetDeviceId(), cancellationToken);
 
             return Result<UserProfile>.Success(user);
         }
