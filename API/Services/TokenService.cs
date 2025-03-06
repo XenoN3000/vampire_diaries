@@ -33,7 +33,8 @@ public class TokenService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            SigningCredentials = creds
+            SigningCredentials = creds,
+            Expires = DateTime.UtcNow.AddYears(10)
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
