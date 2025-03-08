@@ -1,6 +1,6 @@
 {
   "app": "timingapp",
-  "image": "xenon1998/timing-app:5.0",
+  "image": "xenon1998/timing-app:6.0",
   "port": 8080,
   "build": {
     "location": "iran"
