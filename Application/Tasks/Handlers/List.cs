@@ -12,7 +12,6 @@ public class List
 {
     public class Query : IRequest<Result<PagedList<TaskDto>>>
     {
-        public Guid ProjectId { get; set; }
         public TaskParams Params { get; set; }
     }
 
@@ -34,7 +33,7 @@ public class List
         public async Task<Result<PagedList<TaskDto>>> Handle(Query request, CancellationToken cancellationToken)
         {
             var query = _context.Tasks
-                .Where(d => d.ProjectId == request.ProjectId)
+                .Where(d => d.Owner.DeviceId == _userAccessor.GetDeviceId())
                 .OrderBy(d => d.StartTim)
                 .ProjectTo<TaskDto>(_mapper.ConfigurationProvider)
                 .AsQueryable();

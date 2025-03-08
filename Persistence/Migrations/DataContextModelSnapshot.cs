@@ -39,7 +39,7 @@ namespace Persistence.Migrations
                     b.Property<int>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("LockoutEnabled")
+                    b.Property<int>("LockoutEnabled")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
@@ -59,13 +59,13 @@ namespace Persistence.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("PhoneNumberConfirmed")
+                    b.Property<int>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("TwoFactorEnabled")
+                    b.Property<int>("TwoFactorEnabled")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UserName")
@@ -84,19 +84,24 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Project", b =>
+            modelBuilder.Entity("Domain.Task", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreateAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Duration")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("OwnerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StartTim")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
@@ -106,34 +111,6 @@ namespace Persistence.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Projects");
-                });
-
-            modelBuilder.Entity("Domain.Task", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("Duration")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("StartTim")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
                     b.ToTable("Tasks");
                 });
 
@@ -142,7 +119,7 @@ namespace Persistence.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("LoggedInAt")
+                    b.Property<string>("LoggedInAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("UserId", "LoggedInAt");
@@ -278,24 +255,13 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Project", b =>
+            modelBuilder.Entity("Domain.Task", b =>
                 {
                     b.HasOne("Domain.AppUser", "Owner")
-                        .WithMany("Projects")
+                        .WithMany("Tasks")
                         .HasForeignKey("OwnerId");
 
                     b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("Domain.Task", b =>
-                {
-                    b.HasOne("Domain.Project", "Project")
-                        .WithMany("Tasks")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Domain.UserLogInTime", b =>
@@ -362,14 +328,9 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.AppUser", b =>
                 {
-                    b.Navigation("Projects");
+                    b.Navigation("Tasks");
 
                     b.Navigation("UserLogIns");
-                });
-
-            modelBuilder.Entity("Domain.Project", b =>
-                {
-                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

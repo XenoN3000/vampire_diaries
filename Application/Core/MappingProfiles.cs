@@ -1,8 +1,8 @@
-using Application.Projects.DTOs;
 using Application.Tasks.DTOs;
 using AutoMapper;
 using Domain;
 using UserProfile = Application.Profiles.DTOs.Profile;
+using UserTask = Domain.Task;
 
 namespace Application.Core;
 
@@ -12,15 +12,13 @@ public class MappingProfiles : Profile
     {
         string currentDeviceId = null;
 
-        CreateMap<Domain.Task, Domain.Task>();
-        CreateMap<Domain.Task, TaskDto>()
+        CreateMap<UserTask, UserTask>();
+        CreateMap<UserTask, TaskDto>()
             .ForMember(d => d.Date, o => o.MapFrom(s => s.StartTim));
 
-        CreateMap<TaskDto, Domain.Task>()
-            .ForMember(d => d.StartTim, o => o.MapFrom(s => s.Date))
-            .ForMember(d => d.ProjectId, o => o.MapFrom(s => s.ProjectId));
-
-        CreateMap<CreateTaskDto, Domain.Task>()
+        CreateMap<TaskDto, UserTask>()
+            .ForMember(d => d.StartTim, o => o.MapFrom(s => s.Date));
+        CreateMap<CreateTaskDto, UserTask>()
             .ForMember(d => d.StartTim, o => o.MapFrom(s => s.Date));
 
 
@@ -30,17 +28,9 @@ public class MappingProfiles : Profile
             .ForMember(d => d.LastLogin,
                 o => o.MapFrom(s => s.UserLogIns
                     .Where(u => u.User.DeviceId == currentDeviceId)
-                    .Select(c => c.LoggedInAt.ToUniversalTime())
+                    .Select(c => c.LoggedInAt)
                     .DefaultIfEmpty()
                     .Max()))
             .ForAllMembers(opts => opts.Condition((s, d, sm) => sm != null));
-
-        CreateMap<Project, Project>();
-        CreateMap<Project, ProjectDto>();
-        CreateMap<ProjectDto, Project>()
-            .ForMember(d => d.OwnerId, o => o.MapFrom(s => s.Owner.Id));
-
-
-        CreateMap<CreateProjectDto, Project>().ReverseMap();
     }
 }

@@ -28,17 +28,20 @@ public class Create
     public class Handler : IRequestHandler<Command, Result<Unit>>
     {
         private readonly DataContext _context;
-        public Handler(DataContext context)
+        private readonly IUserAccessor _userAccessor;
+
+        public Handler(DataContext context, IUserAccessor userAccessor)
         {
             _context = context;
+            _userAccessor = userAccessor;
         }
 
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var project = await _context.Projects.FirstOrDefaultAsync(x => x.Id == request.TaskDto.ProjectId , cancellationToken);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.DeviceId == _userAccessor.GetDeviceId() , cancellationToken);
 
-            if (project is null) return Result<Unit>.Failure("Failed To Create Task due to unknown project !!!");
+            if (user is null) return Result<Unit>.Failure("Failed To Create Task due to unknown project !!!");
 
             var task = new Domain.Task()
             {
@@ -47,8 +50,8 @@ public class Create
                 Description = request.TaskDto.Description,
                 StartTim = request.TaskDto.Date,
                 Duration = request.TaskDto.Duration,
-                ProjectId = request.TaskDto.ProjectId,
-                Project = project
+                OwnerId = user.Id,
+                Owner = user
             };
 
             _context.Tasks.Add(task);
