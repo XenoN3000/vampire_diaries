@@ -9,13 +9,13 @@ namespace API.Controllers;
 
 public class TaskController : BaseApiController
 {
-    [HttpGet("project")]
+    [HttpGet]
     public async Task<IActionResult> GetTasks([FromQuery] TaskParams taskParams, CancellationToken cancellationToken)
     {
         return HandlePagedResult(await Mediator.Send(new List.Query { Params = taskParams}, cancellationToken));
     }
 
-    [HttpGet("project/all")]
+    [HttpGet("all")]
     public async Task<IActionResult> GetAllTasks(CancellationToken cancellationToken)
     {
         return HandleResult(await Mediator.Send(new ListAll.Query{}, cancellationToken));
