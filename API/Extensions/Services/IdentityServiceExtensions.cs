@@ -42,7 +42,7 @@ public static class IdentityServiceExtensions
 
 
         services.AddAuthorization(
-            options => { options.AddPolicy(Konstants.IsDiaryOwner, policy => policy.Requirements.Add(new IsOwnerRequirement())); });
+            options => { options.AddPolicy(Konstants.IsTaskOwner, policy => policy.Requirements.Add(new IsOwnerRequirement())); });
         services.AddTransient<IAuthorizationHandler, IsOwnerRequirementHandler>();
         services.AddScoped<TokenService>();
 

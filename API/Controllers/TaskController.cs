@@ -28,7 +28,7 @@ public class TaskController : BaseApiController
     }
     
     
-    [Authorize(Policy = "IsActivityHost")]
+    [Authorize(Policy = Konstants.IsTaskOwner)]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateTask(Guid id, [FromBody] TaskDto taskDto, CancellationToken cancellationToken)
     {
@@ -43,7 +43,7 @@ public class TaskController : BaseApiController
     }
 
     
-    [Authorize(Policy = "IsActivityHost")]
+    [Authorize(Policy = Konstants.IsTaskOwner)]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTask(Guid id, CancellationToken cancellationToken)
     {

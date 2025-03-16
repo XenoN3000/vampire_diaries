@@ -5,7 +5,7 @@ public  static class Konstants
     public const string CorsPolicy = "CorsPolicy";
     public const string TokenKey = "TokenKey";
     public const string DefaultConnection = "DefaultConnection";
-    public const string IsDiaryOwner = "IsDiaryOwner";
+    public const string IsTaskOwner = "IsTaskOwner";
     
     public static readonly Environment Env = new Environment();
     
