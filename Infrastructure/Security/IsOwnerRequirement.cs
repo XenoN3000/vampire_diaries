@@ -32,7 +32,7 @@ public class IsOwnerRequirementHandler : AuthorizationHandler<IsOwnerRequirement
 
         var diary = _dataContext.Tasks.AsNoTracking()
             .Include(o => o.Owner)
-            .FirstOrDefaultAsync(x => x.OwnerId == userId && x.Id == diaryId).Result;
+            .FirstOrDefaultAsync(x => x.Owner.DeviceId == userId && x.Id == diaryId).Result;
 
         var owner = diary.Owner;
         
