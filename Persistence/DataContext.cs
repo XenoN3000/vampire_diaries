@@ -48,9 +48,9 @@ public class DataContext : IdentityDbContext<AppUser>
             .Property(u => u.StartTim)
             .HasConversion(d => d.ToString(), s => DateTime.Parse(s));
         
-        builder.Entity<Domain.Task>()
-            .Property(u => u.Duration)
-            .HasConversion(d => d.ToString(), s => DateTime.Parse(s));
+        // builder.Entity<Domain.Task>()
+        //     .Property(u => u.Duration)
+        //     .HasConversion(d => d.ToString(), s => TimeOnly.Parse(s));
 
 
 

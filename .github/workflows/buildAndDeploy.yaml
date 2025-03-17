@@ -5,6 +5,7 @@ on:
     branches:
       - liara-publish
       - liara-publish-v2
+      - liara-publish-v3
 jobs:
   build-dockerize-deploy:
     runs-on: ubuntu-24.04
@@ -37,7 +38,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: xenon1998/timing-app:latest, xenon1998/timing-app:9.0
+          tags: xenon1998/timing-app:latest, xenon1998/timing-app:10.0
           file: API/Dockerfile
 
 

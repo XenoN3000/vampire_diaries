@@ -43,8 +43,15 @@ public class Edit
 
             if (task is null) return null;
 
-            _mapper.Map(request.TaskDto, task);
             
+            var ownerId = task.OwnerId;
+
+            _mapper.Map(request.TaskDto, task);
+
+            if (request.TaskDto.OwnerId is null or "")
+            {
+                task.OwnerId = ownerId;
+            }
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
             return !result ? Result<Unit>.Failure("Failed to update Task") : Result<Unit>.Success(Unit.Value);
